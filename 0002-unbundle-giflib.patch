@@ -1,0 +1,50 @@
+From 85508524373ab559e821466c1b8430a8dc544c85 Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Fri, 3 Aug 2012 12:12:38 +1000
+Subject: [PATCH 2/8] unbundle giflib
+
+
+diff --git a/src/gif/gif.pri b/src/gif/gif.pri
+index e2dd0a8..ad0c951 100644
+--- a/src/gif/gif.pri
++++ b/src/gif/gif.pri
+@@ -1,22 +1,8 @@
+ VPATH += $$PWD
+ INCLUDEPATH += $$PWD
+ 
+-DEFINES += HAVE_CONFIG_H
+-DEFINES += HAVE_FCNTL_H
+-DEFINES += HAVE_STDARG_H
+-!win32-msvc* {
+-    DEFINES += HAVE_STDINT_H
+-    DEFINES += HAVE_UNISTD_H
+-}
++LIBS += -lgif
+ 
+-SOURCES += gif_err.c
+-SOURCES += gifalloc.c
+-SOURCES += egif_lib.c
+-SOURCES += gif_hash.c
+-SOURCES += quantize.c
+ SOURCES += gifwriter.cpp
+ 
+-HEADERS += gif_hash.h
+-HEADERS += gif_lib_private.h
+-HEADERS += gif_lib.h
+ HEADERS += gifwriter.h
+diff --git a/src/gif/gifwriter.cpp b/src/gif/gifwriter.cpp
+index 27c66c7..53cdc28 100644
+--- a/src/gif/gifwriter.cpp
++++ b/src/gif/gifwriter.cpp
+@@ -29,7 +29,7 @@
+ 
+ #include "gifwriter.h"
+ 
+-#include "gif_lib.h"
++#include <gif_lib.h>
+ 
+ #include <QImage>
+ #include <QFile>
+-- 
+1.7.11.7
+

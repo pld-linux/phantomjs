@@ -1,0 +1,62 @@
+From 6ac405d555c7f80c95b0636be64e3739d194318e Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Mon, 11 Feb 2013 10:32:55 +1000
+Subject: [PATCH 8/8] unbundle coffee-script
+
+
+diff --git a/src/csconverter.cpp b/src/csconverter.cpp
+index 6abe1ff..8806e8d 100644
+--- a/src/csconverter.cpp
++++ b/src/csconverter.cpp
+@@ -49,9 +49,9 @@ CSConverter::CSConverter()
+     : QObject(QCoreApplication::instance())
+ {
+     m_webPage.mainFrame()->evaluateJavaScript(
+-        Utils::readResourceFileUtf8(":/coffee-script/extras/coffee-script.js")
++        Utils::readResourceFileUtf8("/usr/share/coffee-script/extras/coffee-script.js")
+ #ifdef HAVE_QT_JS_STACK_TRACES
+-        , QString("phantomjs://coffee-script/extras/coffee-script.js")
++        , QString("/usr/share/coffee-script/extras/coffee-script.js")
+ #endif
+     );
+     m_webPage.mainFrame()->addToJavaScriptWindowObject("converter", this);
+diff --git a/src/modules/_coffee-script.js b/src/modules/_coffee-script.js
+index 4366c50..a8e8f7d 100644
+--- a/src/modules/_coffee-script.js
++++ b/src/modules/_coffee-script.js
+@@ -8,4 +8,4 @@ require.stub('fs', {
+     }
+ });
+ 
+-module.exports = require('../coffee-script');
++module.exports = require('/usr/lib/node_modules/coffee-script');
+diff --git a/src/phantomjs.qrc b/src/phantomjs.qrc
+index 31839b5..1e9fc94 100644
+--- a/src/phantomjs.qrc
++++ b/src/phantomjs.qrc
+@@ -11,22 +11,5 @@
+         <file>modules/child_process.js</file>
+         <file>modules/_coffee-script.js</file>
+         <file>repl.js</file>
+-
+-        <file>coffee-script/package.json</file>
+-        <file>coffee-script/lib/coffee-script/coffee-script.js</file>
+-        <file>coffee-script/lib/coffee-script/optparse.js</file>
+-        <file>coffee-script/lib/coffee-script/command.js</file>
+-        <file>coffee-script/lib/coffee-script/scope.js</file>
+-        <file>coffee-script/lib/coffee-script/parser.js</file>
+-        <file>coffee-script/lib/coffee-script/browser.js</file>
+-        <file>coffee-script/lib/coffee-script/nodes.js</file>
+-        <file>coffee-script/lib/coffee-script/grammar.js</file>
+-        <file>coffee-script/lib/coffee-script/lexer.js</file>
+-        <file>coffee-script/lib/coffee-script/repl.js</file>
+-        <file>coffee-script/lib/coffee-script/cake.js</file>
+-        <file>coffee-script/lib/coffee-script/helpers.js</file>
+-        <file>coffee-script/lib/coffee-script/rewriter.js</file>
+-        <file>coffee-script/lib/coffee-script/index.js</file>
+-        <file>coffee-script/extras/coffee-script.js</file>
+     </qresource>
+ </RCC>
+-- 
+1.7.11.7
+

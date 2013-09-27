@@ -1,0 +1,48 @@
+From 87699a4bc1aee240a6bf127f36d5ef1b8b2953c6 Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Fri, 3 Aug 2012 12:14:12 +1000
+Subject: [PATCH 3/8] unbundle mongoose
+
+
+diff --git a/src/phantomjs.pro b/src/phantomjs.pro
+index e6f5de8..2b3fb1b 100644
+--- a/src/phantomjs.pro
++++ b/src/phantomjs.pro
+@@ -56,7 +56,7 @@ OTHER_FILES += \
+     repl.js
+ 
+ include(gif/gif.pri)
+-include(mongoose/mongoose.pri)
++LIBS += -lmongoose
+ include(linenoise/linenoise.pri)
+ include(qcommandline/qcommandline.pri)
+ 
+diff --git a/src/webserver.cpp b/src/webserver.cpp
+index 9c60354..e26f6c4 100644
+--- a/src/webserver.cpp
++++ b/src/webserver.cpp
+@@ -32,7 +32,7 @@
+ #include "webserver.h"
+ 
+ #include "encoding.h"
+-#include "mongoose/mongoose.h"
++#include <mongoose.h>
+ 
+ #include <QByteArray>
+ #include <QHostAddress>
+diff --git a/src/webserver.h b/src/webserver.h
+index 1cbb564..bdfdc50 100644
+--- a/src/webserver.h
++++ b/src/webserver.h
+@@ -35,7 +35,7 @@
+ #include <QMutex>
+ #include <QSemaphore>
+ 
+-#include "mongoose.h"
++#include <mongoose.h>
+ 
+ class Config;
+ 
+-- 
+1.7.11.7
+

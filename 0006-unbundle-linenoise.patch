@@ -1,0 +1,22 @@
+From ece8e682b74a9e6e28349e5844af424a26b261ee Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Tue, 8 Jan 2013 21:52:20 +1000
+Subject: [PATCH 6/8] unbundle linenoise
+
+
+diff --git a/src/phantomjs.pro b/src/phantomjs.pro
+index 9a690fc..69e055d 100644
+--- a/src/phantomjs.pro
++++ b/src/phantomjs.pro
+@@ -55,7 +55,7 @@ OTHER_FILES += \
+ 
+ include(gif/gif.pri)
+ LIBS += -lmongoose
+-include(linenoise/linenoise.pri)
++LIBS += -llinenoise
+ include(qcommandline/qcommandline.pri)
+ 
+ win32: RC_FILE = phantomjs_win.rc
+-- 
+1.7.11.7
+

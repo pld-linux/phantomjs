@@ -1,0 +1,93 @@
+From ee970c5d54f41a45e3288c5b107b5aa0c065291f Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Fri, 3 Aug 2012 12:16:20 +1000
+Subject: [PATCH 4/8] unbundle breakpad
+
+
+diff --git a/src/main.cpp b/src/main.cpp
+index 734c084..64560aa 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -32,12 +32,14 @@
+ #include "env.h"
+ #include "phantom.h"
+ 
++#ifdef HAVE_BREAKPAD
+ #ifdef Q_OS_LINUX
+ #include "client/linux/handler/exception_handler.h"
+ #endif
+ #ifdef Q_OS_MAC
+ #include "client/mac/handler/exception_handler.h"
+ #endif
++#endif
+ 
+ #include <QApplication>
+ #include <QSslSocket>
+@@ -62,6 +64,7 @@ Q_IMPORT_PLUGIN(qico)
+ 
+ int main(int argc, char** argv, const char** envp)
+ {
++#ifdef HAVE_BREAKPAD
+     // Setup Google Breakpad exception handler
+ #ifdef Q_OS_LINUX
+     google_breakpad::ExceptionHandler eh("/tmp", NULL, Utils::exceptionHandler, NULL, true);
+@@ -88,6 +91,7 @@ int main(int argc, char** argv, const char** envp)
+         free(szBuffer);
+     }
+ #endif
++#endif
+ 
+     QApplication app(argc, argv);
+ 
+diff --git a/src/phantomjs.pro b/src/phantomjs.pro
+index 2b3fb1b..d453b31 100644
+--- a/src/phantomjs.pro
++++ b/src/phantomjs.pro
+@@ -60,44 +60,6 @@ LIBS += -lmongoose
+ include(linenoise/linenoise.pri)
+ include(qcommandline/qcommandline.pri)
+ 
+-linux*|mac {
+-    INCLUDEPATH += breakpad/src
+-
+-    SOURCES += breakpad/src/client/minidump_file_writer.cc \
+-      breakpad/src/common/convert_UTF.c \
+-      breakpad/src/common/md5.cc \
+-      breakpad/src/common/string_conversion.cc 
+-}
+-
+-linux* {
+-    SOURCES += breakpad/src/client/linux/crash_generation/crash_generation_client.cc \
+-      breakpad/src/client/linux/handler/exception_handler.cc \
+-      breakpad/src/client/linux/log/log.cc \
+-      breakpad/src/client/linux/minidump_writer/linux_dumper.cc \
+-      breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc \
+-      breakpad/src/client/linux/minidump_writer/minidump_writer.cc \
+-      breakpad/src/common/linux/file_id.cc \
+-      breakpad/src/common/linux/guid_creator.cc \
+-      breakpad/src/common/linux/memory_mapped_file.cc \
+-      breakpad/src/common/linux/safe_readlink.cc
+-}
+-
+-mac {
+-    SOURCES += breakpad/src/client/mac/crash_generation/crash_generation_client.cc \
+-      breakpad/src/client/mac/handler/exception_handler.cc \
+-      breakpad/src/client/mac/handler/minidump_generator.cc \
+-      breakpad/src/client/mac/handler/dynamic_images.cc \
+-      breakpad/src/client/mac/handler/breakpad_nlist_64.cc \
+-      breakpad/src/common/mac/bootstrap_compat.cc \
+-      breakpad/src/common/mac/file_id.cc \
+-      breakpad/src/common/mac/macho_id.cc \
+-      breakpad/src/common/mac/macho_utilities.cc \
+-      breakpad/src/common/mac/macho_walker.cc \
+-      breakpad/src/common/mac/string_utilities.cc
+-
+-    OBJECTIVE_SOURCES += breakpad/src/common/mac/MachIPC.mm
+-}
+-
+ win32: RC_FILE = phantomjs_win.rc
+ os2:   RC_FILE = phantomjs_os2.rc
+ 
+-- 
+1.7.11.7
+

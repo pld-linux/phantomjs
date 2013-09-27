@@ -1,0 +1,124 @@
+From 72f8a143a14a6aebf4b894c6c6281955c9af220c Mon Sep 17 00:00:00 2001
+From: Dan Callaghan <dcallagh@redhat.com>
+Date: Thu, 10 Jan 2013 11:08:13 +1000
+Subject: [PATCH 7/8] unbundle QCommandLine
+
+This relies on some patches for QCommandLine which have been submitted
+upstream:
+
+http://dev.iksaif.net/issues/252
+
+diff --git a/src/config.cpp b/src/config.cpp
+index 2bf3fdb..9a6ecc8 100644
+--- a/src/config.cpp
++++ b/src/config.cpp
+@@ -39,7 +39,7 @@
+ #include <QNetworkProxy>
+ 
+ #include "terminal.h"
+-#include "qcommandline.h"
++#include <qcommandline/qcommandline.h>
+ #include "utils.h"
+ #include "consts.h"
+ 
+@@ -48,32 +48,58 @@
+ 
+ static const struct QCommandLineConfigEntry flags[] =
+ {
+-    { QCommandLine::Option, '\0', "cookies-file", "Sets the file name to store the persistent cookies", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "config", "Specifies JSON-formatted configuration file", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "debug", "Prints additional warning and debug message: 'true' or 'false' (default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "disk-cache", "Enables disk cache: 'true' or 'false' (default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "ignore-ssl-errors", "Ignores SSL errors (expired/self-signed certificate errors): 'true' or 'false' (default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "load-images", "Loads all inlined images: 'true' (default) or 'false'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "local-storage-path", "Specifies the location for offline local storage", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "local-storage-quota", "Sets the maximum size of the offline local storage (in KB)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "local-to-remote-url-access", "Allows local content to access remote URL: 'true' or 'false' (default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "max-disk-cache-size", "Limits the size of the disk cache (in KB)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "output-encoding", "Sets the encoding for the terminal output, default is 'utf8'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "remote-debugger-port", "Starts the script in a debug harness and listens on the specified port", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "remote-debugger-autorun", "Runs the script in the debugger immediately: 'true' or 'false' (default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "proxy", "Sets the proxy server, e.g. '--proxy=http://proxy.company.com:8080'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "proxy-auth", "Provides authentication information for the proxy, e.g. ''-proxy-auth=username:password'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "proxy-type", "Specifies the proxy type, 'http' (default), 'none' (disable completely), or 'socks5'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "script-encoding", "Sets the encoding used for the starting script, default is 'utf8'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "web-security", "Enables web security, 'true' (default) or 'false'", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "ssl-protocol", "Sets the SSL protocol (supported protocols: 'SSLv3' (default), 'SSLv2', 'TLSv1', 'any')", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "ssl-certificates-path", "Sets the location for custom CA certificates (if none set, uses system default)", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "webdriver", "Starts in 'Remote WebDriver mode' (embedded GhostDriver): '[[<IP>:]<PORT>]' (default '127.0.0.1:8910') ", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "webdriver-logfile", "File where to write the WebDriver's Log (default 'none') (NOTE: needs '--webdriver') ", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "webdriver-loglevel", "WebDriver Logging Level: (supported: 'ERROR', 'WARN', 'INFO', 'DEBUG') (default 'INFO') (NOTE: needs '--webdriver') ", QCommandLine::Optional },
+-    { QCommandLine::Option, '\0', "webdriver-selenium-grid-hub", "URL to the Selenium Grid HUB: 'URL_TO_HUB' (default 'none') (NOTE: needs '--webdriver') ", QCommandLine::Optional },
+-    { QCommandLine::Param, '\0', "script", "Script", QCommandLine::Flags(QCommandLine::Optional|QCommandLine::ParameterFence)},
+-    { QCommandLine::Param, '\0', "argument", "Script argument", QCommandLine::OptionalMultiple },
++    { QCommandLine::Option, '\0', "cookies-file", "Sets the file name to store the persistent cookies",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "config", "Specifies JSON-formatted configuration file",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "debug", "Prints additional warning and debug message: 'true' or 'false' (default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "disk-cache", "Enables disk cache: 'true' or 'false' (default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "ignore-ssl-errors", "Ignores SSL errors (expired/self-signed certificate errors): 'true' or 'false' (default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "load-images", "Loads all inlined images: 'true' (default) or 'false'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "local-storage-path", "Specifies the location for offline local storage",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "local-storage-quota", "Sets the maximum size of the offline local storage (in KB)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "local-to-remote-url-access", "Allows local content to access remote URL: 'true' or 'false' (default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "max-disk-cache-size", "Limits the size of the disk cache (in KB)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "output-encoding", "Sets the encoding for the terminal output, default is 'utf8'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "remote-debugger-port", "Starts the script in a debug harness and listens on the specified port",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "remote-debugger-autorun", "Runs the script in the debugger immediately: 'true' or 'false' (default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "proxy", "Sets the proxy server, e.g. '--proxy=http://proxy.company.com:8080'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "proxy-auth", "Provides authentication information for the proxy, e.g. ''-proxy-auth=username:password'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "proxy-type", "Specifies the proxy type, 'http' (default), 'none' (disable completely), or 'socks5'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "script-encoding", "Sets the encoding used for the starting script, default is 'utf8'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "web-security", "Enables web security, 'true' (default) or 'false'",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "ssl-protocol", "Sets the SSL protocol (supported protocols: 'SSLv3' (default), 'SSLv2', 'TLSv1', 'any')",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "ssl-certificates-path", "Sets the location for custom CA certificates (if none set, uses system default)",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "webdriver", "Starts in 'Remote WebDriver mode' (embedded GhostDriver): '[[<IP>:]<PORT>]' (default '127.0.0.1:8910') ",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "webdriver-logfile", "File where to write the WebDriver's Log (default 'none') (NOTE: needs '--webdriver') ",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "webdriver-loglevel", "WebDriver Logging Level: (supported: 'ERROR', 'WARN', 'INFO', 'DEBUG') (default 'INFO') (NOTE: needs '--webdriver') ",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Option, '\0', "webdriver-selenium-grid-hub", "URL to the Selenium Grid HUB: 'URL_TO_HUB' (default 'none') (NOTE: needs '--webdriver') ",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::NoShortName) },
++    { QCommandLine::Param, '\0', "script", "Script",
++        QCommandLine::Flags(QCommandLine::Optional|QCommandLine::ParameterFence|QCommandLine::SuppressHelp)},
++    { QCommandLine::Param, '\0', "argument", "Script argument",
++        QCommandLine::Flags(QCommandLine::OptionalMultiple|QCommandLine::SuppressHelp) },
+     { QCommandLine::Switch, 'w', "wd", "Equivalent to '--webdriver' option above", QCommandLine::Optional },
+     { QCommandLine::Switch, 'h', "help", "Shows this message and quits", QCommandLine::Optional },
+     { QCommandLine::Switch, 'v', "version", "Prints out PhantomJS version", QCommandLine::Optional },
+diff --git a/src/phantomjs.pro b/src/phantomjs.pro
+index 69e055d..8bb3541 100644
+--- a/src/phantomjs.pro
++++ b/src/phantomjs.pro
+@@ -56,7 +56,7 @@ OTHER_FILES += \
+ include(gif/gif.pri)
+ LIBS += -lmongoose
+ LIBS += -llinenoise
+-include(qcommandline/qcommandline.pri)
++LIBS += -lqcommandline
+ 
+ win32: RC_FILE = phantomjs_win.rc
+ os2:   RC_FILE = phantomjs_os2.rc
+-- 
+1.7.11.7
+
