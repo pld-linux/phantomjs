@@ -4,7 +4,6 @@ Version:	1.9.0
 Release:	1
 License:	BSD
 Group:		Applications/Networking
-URL:		http://phantomjs.org/
 Source0:	http://phantomjs.googlecode.com/files/%{name}-%{version}-source.zip
 # Source0-md5:	a779eb301cac2df9f366be5b2d17cef7
 Patch1:		0001-gifwriter-bgcolor-narrowing.patch
@@ -15,6 +14,7 @@ Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
 Patch8:		0008-unbundle-coffee-script.patch
+URL:		http://phantomjs.org/
 BuildRequires:	QtWebKit-devel
 BuildRequires:	coffee-script
 BuildRequires:	giflib-devel
@@ -23,6 +23,7 @@ BuildRequires:	mongoose-devel
 BuildRequires:	qcommandline-devel
 BuildRequires:	unzip
 Requires:	coffee-script
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 PhantomJS is a headless WebKit with JavaScript API. It has fast and
@@ -49,14 +50,14 @@ rm -r src/linenoise
 rm -r src/qcommandline
 rm -r src/coffee-script
 
-%patch1 -p1 -b.gifwriter-bgcolor-narrowing
-%patch2 -p1 -b.giflib
-%patch3 -p1 -b.mongoose
-%patch4 -p1 -b.breakpad
-%patch5 -p1 -b.qt
-%patch6 -p1 -b.linenoise
-%patch7 -p1 -b.qcommandline
-%patch8 -p1 -b.coffee-script
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 %build
 export CFLAGS="%{rpmcflags}"
@@ -66,13 +67,16 @@ qmake-qt4
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_bindir}
+install -p bin/phantomjs $RPM_BUILD_ROOT%{_bindir}
 
-cp bin/phantomjs $RPM_BUILD_ROOT%{_bindir}/
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.md LICENSE.BSD CONTRIBUTING.md ChangeLog examples/
+%doc README.md LICENSE.BSD CONTRIBUTING.md ChangeLog
 %attr(755,root,root) %{_bindir}/%{name}
+%{_examplesdir}/%{name}-%{version}
