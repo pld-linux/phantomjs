@@ -1,11 +1,12 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
-Version:	1.9.0
+Version:	1.9.7
 Release:	1
 License:	BSD
 Group:		Applications/Networking
-Source0:	http://phantomjs.googlecode.com/files/%{name}-%{version}-source.zip
-# Source0-md5:	a779eb301cac2df9f366be5b2d17cef7
+Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
+# Source0-md5:	5d308d2db7d8b494f99dbb5664447547
+Patch0:		giflib5.patch
 Patch1:		0001-gifwriter-bgcolor-narrowing.patch
 Patch2:		0002-unbundle-giflib.patch
 Patch3:		0003-unbundle-mongoose.patch
@@ -14,6 +15,7 @@ Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
 Patch8:		0008-unbundle-coffee-script.patch
+Patch9:		no-qcodecs.patch
 URL:		http://phantomjs.org/
 BuildRequires:	QtWebKit-devel
 BuildRequires:	coffee-script
@@ -49,7 +51,9 @@ rm -r src/qt
 rm -r src/linenoise
 rm -r src/qcommandline
 rm -r src/coffee-script
+rm -r src/breakpad
 
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -58,11 +62,13 @@ rm -r src/coffee-script
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
-export CFLAGS="%{rpmcflags}"
 qmake-qt4
-%{__make}
+%{__make} \
+	CXX="%{__cxx}" \
+	CXXFLAGS="%{rpmcxxflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT

@@ -1,0 +1,50 @@
+disable static qcncodecs, qjpcodecs, qkrcodecs, qtwcodecs codecs
+
+the shared versions already come from QtCore package:
+-rwxr-xr-x 1 root root 144K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqcncodecs.so*
+-rwxr-xr-x 1 root root 181K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqjpcodecs.so*
+-rwxr-xr-x 1 root root  78K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqkrcodecs.so*
+-rwxr-xr-x 1 root root 158K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqtwcodecs.so*
+
+--- phantomjs-1.9.7/./src/main.cpp~	2014-03-02 16:26:44.000000000 +0200
++++ phantomjs-1.9.7/./src/main.cpp	2014-03-02 16:27:37.049043803 +0200
+@@ -46,11 +46,6 @@
+ 
+ #if !defined(QT_SHARED) && !defined(QT_DLL)
+ #include <QtPlugin>
+-
+-Q_IMPORT_PLUGIN(qcncodecs)
+-Q_IMPORT_PLUGIN(qjpcodecs)
+-Q_IMPORT_PLUGIN(qkrcodecs)
+-Q_IMPORT_PLUGIN(qtwcodecs)
+ #endif
+ 
+ #ifdef Q_OS_WIN32
+--- phantomjs-1.9.7/./src/phantomjs.pro~	2014-03-02 16:26:44.000000000 +0200
++++ phantomjs-1.9.7/./src/phantomjs.pro	2014-03-02 16:28:02.520192429 +0200
+@@ -58,14 +58,6 @@
+ LIBS += -llinenoise
+ LIBS += -lqcommandline
+ 
+-linux*|mac {
+-    QTPLUGIN += \
+-        qcncodecs \
+-        qjpcodecs \
+-        qkrcodecs \
+-        qtwcodecs
+-}
+-
+ win32: RC_FILE = phantomjs_win.rc
+ os2:   RC_FILE = phantomjs_os2.rc
+ 
+@@ -82,10 +74,6 @@
+     CONFIG(static) {
+         DEFINES += STATIC_BUILD
+         QTPLUGIN += \
+-            qcncodecs \
+-            qjpcodecs \
+-            qkrcodecs \
+-            qtwcodecs \
+             qico
+     }
+ }
