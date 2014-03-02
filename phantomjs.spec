@@ -6,6 +6,7 @@ License:	BSD
 Group:		Applications/Networking
 Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
 # Source0-md5:	5d308d2db7d8b494f99dbb5664447547
+Patch0:		giflib5.patch
 Patch1:		0001-gifwriter-bgcolor-narrowing.patch
 Patch2:		0002-unbundle-giflib.patch
 Patch3:		0003-unbundle-mongoose.patch
@@ -49,7 +50,9 @@ rm -r src/qt
 rm -r src/linenoise
 rm -r src/qcommandline
 rm -r src/coffee-script
+rm -r src/breakpad
 
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1

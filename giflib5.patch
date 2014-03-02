@@ -1,0 +1,48 @@
+https://github.com/ariya/phantomjs/pull/11760
+https://github.com/bmanojlovic/phantomjs/commit/f504f5316fe0a170bf41327b1715f806d8592d9a.patch
+
+From f504f5316fe0a170bf41327b1715f806d8592d9a Mon Sep 17 00:00:00 2001
+From: Boris Manojlovic <boris.manojlovic@zis.co.rs>
+Date: Mon, 18 Nov 2013 08:02:05 +0100
+Subject: [PATCH] add giflib5 support to codebase
+
+---
+ src/gif/gifwriter.cpp | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/gif/gifwriter.cpp b/src/gif/gifwriter.cpp
+index c0a010c..5a8647e 100644
+--- a/src/gif/gifwriter.cpp
++++ b/src/gif/gifwriter.cpp
+@@ -34,6 +34,12 @@
+ #include <QImage>
+ #include <QFile>
+ 
++#if defined GIFLIB_MAJOR && GIFLIB_MAJOR >=5
++#define EGifOpenFileName(a, b) EGifOpenFileName(a, b, NULL)
++#define EGifOpen(a, b) EGifOpen(a, b, NULL)
++#define QuantizeBuffer GifQuantizeBuffer
++#endif
++
+ static int saveGifBlock(GifFileType *gif, const GifByteType *data, int i)
+ {
+     QFile *file = (QFile*)(gif->UserData);
+@@ -100,9 +106,14 @@ bool exportGif(const QImage &img, const QString &fileName)
+         if (qAlpha(colorTable[c]) == 0)
+             bgcolor = c;
+     }
+-    EGifSetGifVersion("87a");
+ 
++#if defined GIFLIB_MAJOR && GIFLIB_MAJOR >= 5
++    GifFileType *gif = EGifOpen(&file, saveGifBlock);
++    EGifSetGifVersion(gif, false);
++#else
++    EGifSetGifVersion("87a");
+     GifFileType *gif = EGifOpen(&file, saveGifBlock);
++#endif
+     gif->ImageCount = 1;
+     EGifPutScreenDesc(gif, image.width(), image.height(), 256, 0, &cmap);
+     if (bgcolor >= 0) {
+-- 
+1.8.5.5
+
