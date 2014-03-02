@@ -63,9 +63,10 @@ rm -r src/breakpad
 %patch8 -p1
 
 %build
-export CFLAGS="%{rpmcflags}"
 qmake-qt4
-%{__make}
+%{__make} \
+	CXX="%{__cxx}" \
+	CXXFLAGS="%{rpmcxxflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
