@@ -1,11 +1,11 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
-Version:	1.9.0
-Release:	1
+Version:	1.9.7
+Release:	0.1
 License:	BSD
 Group:		Applications/Networking
-Source0:	http://phantomjs.googlecode.com/files/%{name}-%{version}-source.zip
-# Source0-md5:	a779eb301cac2df9f366be5b2d17cef7
+Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
+# Source0-md5:	5d308d2db7d8b494f99dbb5664447547
 Patch1:		0001-gifwriter-bgcolor-narrowing.patch
 Patch2:		0002-unbundle-giflib.patch
 Patch3:		0003-unbundle-mongoose.patch
