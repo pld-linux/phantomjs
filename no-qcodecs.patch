@@ -1,4 +1,10 @@
-disable qcncodecs, qjpcodecs, qkrcodecs, qtwcodecs codecs, not sure how to use them from system qt4
+disable static qcncodecs, qjpcodecs, qkrcodecs, qtwcodecs codecs
+
+the shared versions already come from QtCore package:
+-rwxr-xr-x 1 root root 144K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqcncodecs.so*
+-rwxr-xr-x 1 root root 181K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqjpcodecs.so*
+-rwxr-xr-x 1 root root  78K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqkrcodecs.so*
+-rwxr-xr-x 1 root root 158K Feb  5 15:23 /usr/lib64/qt4/plugins/codecs/libqtwcodecs.so*
 
 --- phantomjs-1.9.7/./src/main.cpp~	2014-03-02 16:26:44.000000000 +0200
 +++ phantomjs-1.9.7/./src/main.cpp	2014-03-02 16:27:37.049043803 +0200
