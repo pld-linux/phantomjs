@@ -15,6 +15,7 @@ Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
 Patch8:		0008-unbundle-coffee-script.patch
+Patch9:		no-qcodecs.patch
 URL:		http://phantomjs.org/
 BuildRequires:	QtWebKit-devel
 BuildRequires:	coffee-script
@@ -61,6 +62,7 @@ rm -r src/breakpad
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 qmake-qt4
