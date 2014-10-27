@@ -1,7 +1,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	1.9.7
-Release:	2
+Release:	3
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
