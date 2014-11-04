@@ -46,3 +46,17 @@ index c0a010c..5a8647e 100644
 -- 
 1.8.5.5
 
+--- phantomjs-1.9.7/src/gif/gifwriter.cpp~	2014-11-04 21:03:45.000000000 +0100
++++ phantomjs-1.9.7/src/gif/gifwriter.cpp	2014-11-04 21:06:16.042996189 +0100
+@@ -128,7 +128,11 @@
+         }
+     }
+ 
++#if ((GIFLIB_MAJOR == 5 && GIFLIB_MINOR >= 1) || GIFLIB_MAJOR > 5)
++    EGifCloseFile(gif, NULL);
++#else
+     EGifCloseFile(gif);
++#endif
+     file.close();
+ 
+     delete [] cmap.Colors;
