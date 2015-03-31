@@ -1,64 +1,29 @@
-From ee970c5d54f41a45e3288c5b107b5aa0c065291f Mon Sep 17 00:00:00 2001
-From: Dan Callaghan <dcallagh@redhat.com>
-Date: Fri, 3 Aug 2012 12:16:20 +1000
-Subject: [PATCH 4/8] unbundle breakpad
-
-
-diff --git a/src/main.cpp b/src/main.cpp
-index 734c084..64560aa 100644
---- a/src/main.cpp
-+++ b/src/main.cpp
-@@ -32,12 +32,14 @@
- #include "env.h"
- #include "phantom.h"
+--- phantomjs-2.0.0/src/crashdump.cpp~	2015-01-24 03:19:52.000000000 +0100
++++ phantomjs-2.0.0/src/crashdump.cpp	2015-03-31 10:42:18.791404606 +0200
+@@ -37,7 +37,7 @@
+ #include <exception>
+ #include <cstdlib>
  
-+#ifdef HAVE_BREAKPAD
- #ifdef Q_OS_LINUX
+-#ifdef Q_OS_LINUX
++#if 0
  #include "client/linux/handler/exception_handler.h"
- #endif
- #ifdef Q_OS_MAC
- #include "client/mac/handler/exception_handler.h"
- #endif
-+#endif
+ #define HAVE_BREAKPAD
+ #define EHC_EXTRA_ARGS true
+--- phantomjs-2.0.0/src/phantomjs.pro~	2015-03-31 12:19:42.000000000 +0200
++++ phantomjs-2.0.0/src/phantomjs.pro	2015-03-31 12:20:46.849769573 +0200
+@@ -68,44 +68,6 @@ LIBS += -lmongoose
+ LIBS += -llinenoise
+ LIBS += -lqcommandline
  
- #include <QApplication>
- #include <QSslSocket>
-@@ -62,6 +64,7 @@ Q_IMPORT_PLUGIN(qico)
- 
- int main(int argc, char** argv, const char** envp)
- {
-+#ifdef HAVE_BREAKPAD
-     // Setup Google Breakpad exception handler
- #ifdef Q_OS_LINUX
-     google_breakpad::ExceptionHandler eh("/tmp", NULL, Utils::exceptionHandler, NULL, true);
-@@ -88,6 +91,7 @@ int main(int argc, char** argv, const char** envp)
-         free(szBuffer);
-     }
- #endif
-+#endif
- 
-     QApplication app(argc, argv);
- 
---- phantomjs-1.9.7/src/phantomjs.pro~	2014-03-02 15:55:56.000000000 +0200
-+++ phantomjs-1.9.7/src/phantomjs.pro	2014-03-02 15:57:03.766411109 +0200
-@@ -61,13 +61,6 @@
- include(qcommandline/qcommandline.pri)
- 
- linux*|mac {
+-linux*|mac|openbsd* {
 -    INCLUDEPATH += breakpad/src
 -
 -    SOURCES += breakpad/src/client/minidump_file_writer.cc \
 -      breakpad/src/common/convert_UTF.c \
 -      breakpad/src/common/md5.cc \
 -      breakpad/src/common/string_conversion.cc 
+-}
 -
-     QTPLUGIN += \
-         qcncodecs \
-         qjpcodecs \
-@@ -75,35 +68,6 @@
-         qtwcodecs
- }
- 
 -linux* {
 -    SOURCES += breakpad/src/client/linux/crash_generation/crash_generation_client.cc \
 -      breakpad/src/client/linux/handler/exception_handler.cc \
@@ -91,14 +56,59 @@ index 734c084..64560aa 100644
  win32: RC_FILE = phantomjs_win.rc
  os2:   RC_FILE = phantomjs_os2.rc
  
-@@ -117,10 +81,6 @@
+@@ -119,10 +81,6 @@ mac {
  
  win32-msvc* {
-     LIBS += -lCrypt32
+     LIBS += -lCrypt32 -llibxml2
 -    INCLUDEPATH += breakpad/src
 -    SOURCES += breakpad/src/client/windows/handler/exception_handler.cc \
 -      breakpad/src/client/windows/crash_generation/crash_generation_client.cc \
 -      breakpad/src/common/windows/guid_string.cc
      CONFIG(static) {
          DEFINES += STATIC_BUILD
-         QTPLUGIN += \
+     }
+--- phantomjs-2.0.0/src/crashdump.h~	2015-01-24 03:19:52.000000000 +0100
++++ phantomjs-2.0.0/src/crashdump.h	2015-03-31 13:02:08.664129280 +0200
+@@ -31,9 +31,11 @@
+ #ifndef CRASHDUMP_H
+ #define CRASHDUMP_H
+ 
++#ifdef HAVE_BREAKPAD
+ namespace google_breakpad {
+     class ExceptionHandler;
+ }
++#endif
+ 
+ class CrashHandler
+ {
+@@ -43,7 +45,9 @@
+ 
+ private:
+     void (*old_terminate_handler)();
++#ifdef HAVE_BREAKPAD
+     google_breakpad::ExceptionHandler *eh;
++#endif
+ };
+ 
+ #endif // CRASHDUMP_H
+--- phantomjs-2.0.0/src/crashdump.cpp~	2015-03-31 13:02:35.000000000 +0200
++++ phantomjs-2.0.0/src/crashdump.cpp	2015-03-31 13:05:36.369213390 +0200
+@@ -188,12 +188,16 @@
+ // and crash promptly if not.
+ 
+ CrashHandler::CrashHandler()
+-  : old_terminate_handler(std::set_terminate(std::abort)),
+-    eh(initBreakpad())
++  : old_terminate_handler(std::set_terminate(std::abort))
++#ifdef HAVE_BREAKPAD
++    ,eh(initBreakpad())
++#endif
+ {}
+ 
+ CrashHandler::~CrashHandler()
+ {
++#ifdef HAVE_BREAKPAD
+   delete eh;
++#endif
+   std::set_terminate(old_terminate_handler);
+ }

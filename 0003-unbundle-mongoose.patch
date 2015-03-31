@@ -8,10 +8,10 @@ diff --git a/src/phantomjs.pro b/src/phantomjs.pro
 index e6f5de8..2b3fb1b 100644
 --- a/src/phantomjs.pro
 +++ b/src/phantomjs.pro
-@@ -56,7 +56,7 @@ OTHER_FILES += \
+@@ -64,7 +64,7 @@ OTHER_FILES += \
+     modules/cookiejar.js \
      repl.js
  
- include(gif/gif.pri)
 -include(mongoose/mongoose.pri)
 +LIBS += -lmongoose
  include(linenoise/linenoise.pri)
@@ -27,9 +27,9 @@ index 9c60354..e26f6c4 100644
  #include "encoding.h"
 -#include "mongoose/mongoose.h"
 +#include <mongoose.h>
+ #include "consts.h"
  
  #include <QByteArray>
- #include <QHostAddress>
 diff --git a/src/webserver.h b/src/webserver.h
 index 1cbb564..bdfdc50 100644
 --- a/src/webserver.h
@@ -43,6 +43,3 @@ index 1cbb564..bdfdc50 100644
  
  class Config;
  
--- 
-1.7.11.7
-

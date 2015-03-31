@@ -21,65 +21,20 @@ index 226c98f..2bf3fdb 100644
  }
  
  QString Config::helpText() const
-diff --git a/src/csconverter.cpp b/src/csconverter.cpp
-index e81303d..6abe1ff 100644
---- a/src/csconverter.cpp
-+++ b/src/csconverter.cpp
-@@ -49,8 +49,10 @@ CSConverter::CSConverter()
-     : QObject(QCoreApplication::instance())
- {
-     m_webPage.mainFrame()->evaluateJavaScript(
--        Utils::readResourceFileUtf8(":/coffee-script/extras/coffee-script.js"),
--        QString("phantomjs://coffee-script/extras/coffee-script.js")
-+        Utils::readResourceFileUtf8(":/coffee-script/extras/coffee-script.js")
-+#ifdef HAVE_QT_JS_STACK_TRACES
-+        , QString("phantomjs://coffee-script/extras/coffee-script.js")
-+#endif
-     );
-     m_webPage.mainFrame()->addToJavaScriptWindowObject("converter", this);
- }
-@@ -63,8 +65,10 @@ QVariant CSConverter::convert(const QString &script)
-         "    [true, this.CoffeeScript.compile(converter.source)];" \
-         "} catch (error) {" \
-         "    [false, error.message];" \
--        "}",
--        QString()
-+        "}"
-+#ifdef HAVE_QT_JS_STACK_TRACES
-+        , QString()
-+#endif
-     );
-     return result;
- }
-diff --git a/src/main.cpp b/src/main.cpp
-index 64560aa..ead0562 100644
---- a/src/main.cpp
-+++ b/src/main.cpp
-@@ -58,10 +58,6 @@ Q_IMPORT_PLUGIN(qico)
- #endif
- #endif
- 
--#if QT_VERSION != QT_VERSION_CHECK(4, 8, 4)
--#error Something is wrong with the setup. Please report to the mailing list!
--#endif
--
- int main(int argc, char** argv, const char** envp)
- {
- #ifdef HAVE_BREAKPAD
 diff --git a/src/phantom.cpp b/src/phantom.cpp
 index 1f31795..efc4449 100644
 --- a/src/phantom.cpp
 +++ b/src/phantom.cpp
-@@ -372,7 +372,11 @@ void Phantom::loadModule(const QString &moduleSource, const QString &filename)
+@@ -372,7 +372,11 @@ void Phantom::loadModule(const QString &
        "require.cache['" + filename + "'].exports," +
        "require.cache['" + filename + "']" +
        "));";
--   m_page->mainFrame()->evaluateJavaScript(scriptSource, filename);
+-   m_page->mainFrame()->evaluateJavaScript(scriptSource, "");
 +   m_page->mainFrame()->evaluateJavaScript(scriptSource
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+        , filename
++		   , ""
 +#endif
-+        );
++		   );
  }
  
  bool Phantom::injectJs(const QString &jsFilePath)
@@ -96,21 +51,6 @@ index 1f31795..efc4449 100644
                  );
  }
  
-diff --git a/src/phantomjs.pro b/src/phantomjs.pro
-index d453b31..9a690fc 100644
---- a/src/phantomjs.pro
-+++ b/src/phantomjs.pro
-@@ -6,9 +6,7 @@ CONFIG += console
- DESTDIR = ../bin
- 
- RESOURCES = phantomjs.qrc \
--    ghostdriver/ghostdriver.qrc \
--    qt/src/3rdparty/webkit/Source/WebCore/inspector/front-end/WebKit.qrc \
--    qt/src/3rdparty/webkit/Source/WebCore/generated/InspectorBackendStub.qrc
-+    ghostdriver/ghostdriver.qrc
- 
- HEADERS += csconverter.h \
-     phantom.h \
 diff --git a/src/repl.cpp b/src/repl.cpp
 index 5ac69da..7b1872d 100644
 --- a/src/repl.cpp

@@ -1,0 +1,11 @@
+--- phantomjs-2.0.0/src/system.cpp~	2015-01-24 03:19:52.000000000 +0100
++++ phantomjs-2.0.0/src/system.cpp	2015-03-31 12:19:03.100496332 +0200
+@@ -35,7 +35,7 @@
+ #include <QVariantMap>
+ #include <QTextCodec>
+ 
+-#include "../env.h"
++#include "env.h"
+ #include "terminal.h"
+ 
+ #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
