@@ -56,7 +56,7 @@ rm -r src/breakpad
 qmake-qt5
 %{__make} \
 	CXX="%{__cxx}" \
-	CXXFLAGS="%{rpmcxxflags}"
+	CXXFLAGS="%{rpmcxxflags} -fPIC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
