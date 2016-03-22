@@ -42,7 +42,9 @@ get_package() {
 	local package=$1 ref=$2
 	export GIT_DIR=$package.git
 	fetch_package $package
-	git diff $tag..$ref > $package.diff
+	git diff $tag..$ref --diff-filter=MA > diff.tmp
+	xz -9 diff.tmp
+	mv -f diff.tmp.xz $package.diff.xz
 }
 
 get_package qtbase $phantom_qtbase
