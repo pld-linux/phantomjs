@@ -8,7 +8,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.1
+Release:	0.2
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -32,6 +32,7 @@ BuildRequires:	giflib-devel
 BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
 %{?with_system_qcommandline:BuildRequires:	qcommandline-devel}
+BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 Requires:	Qt5Gui-platform-xcb
 Requires:	coffee-script
@@ -57,6 +58,22 @@ mv qtwebkit-* src/qt/qtwebkit
 touch src/qt/qtbase/.git
 touch src/qt/qtwebkit/.git
 touch src/qt/3rdparty/.git
+
+# change QMAKE FLAGS to build
+# define QMAKE_STRIP to true, so we get useful -debuginfo pkgs
+cd src/qt/qtbase
+%{__sed} -i -e '
+	s|^\(QMAKE_COMPILER *\)=.*gcc|\1= %{__cc}|;
+	s|^\(QMAKE_CC *\)=.*gcc|\1= %{__cc}|;
+	s|^\(QMAKE_CXX *\)=.*g++|\1= %{__cxx}|;
+	s|^\(QMAKE_CFLAGS_OPTIMIZE .*\)=|\1 = %{rpmcppflags} %{rpmcflags}|;
+	s|^\(QMAKE_LFLAGS *\)+=.*|\1+= %{rpmldflags}|;
+	s|^\(QMAKE_STRIP *\)=.*|\1= :|;
+	' \
+	mkspecs/common/g++-base.conf \
+	mkspecs/common/gcc-base.conf \
+	mkspecs/common/linux.conf
+cd -
 %endif
 
 # remove bundled sources
