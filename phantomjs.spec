@@ -3,6 +3,7 @@
 #
 # Conditional build:
 %bcond_with	system_qcommandline
+%bcond_with	system_qt
 
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
@@ -42,14 +43,14 @@ testing. It includes an implementation of the WebDriver API.
 
 # remove bundled sources
 rm -r src/mongoose
-rm -r src/qt
+%{?with_system_qt:rm -r src/qt}
 rm -r src/linenoise
 %{?with_system_qcommandline:rm -r src/qcommandline}
 
 #%patch0 -p1
 %patch1 -p1
 %patch3 -p1
-%patch5 -p1
+%{?with_system_qt:%patch5 -p1}
 %patch6 -p1
 %{?with_system_qcommandline:%patch7 -p1}
 
