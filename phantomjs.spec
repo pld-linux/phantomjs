@@ -8,11 +8,16 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	1
+Release:	0.1
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	db2d71e67e3557a977c2f269f1ec7fee
+# https://github.com/ariya/phantomjs/tree/2.1.1/src/qt
+Source1:	https://github.com/Vitallium/qtbase/archive/b5cc0083a5766e773885e8dd624c51a967c17de0.tar.gz
+# Source1-md5:	ae375f9f522409ae262e949cd90bf880
+Source2:	https://github.com/Vitallium/qtwebkit/archive/e7b74331d695bfa8b77e39cdc50fc2d84a49a22a.tar.gz
+# Source2-md5:	94daad678e91ff9049ba26eb9e32febf
 Patch0:		%{name}-qt.patch
 Patch1:		%{name}-env.patch
 Patch3:		0003-unbundle-mongoose.patch
@@ -39,7 +44,20 @@ JSON, Canvas, and SVG. It can be used for screen scraping and web
 testing. It includes an implementation of the WebDriver API.
 
 %prep
-%setup -q
+%setup -q %{!?with_system_qt:-a1 -a2}
+
+%if %{without system_qt}
+rmdir src/qt/{qtbase,qtwebkit}
+mv qtbase-* src/qt/qtbase
+mv qtwebkit-* src/qt/qtwebkit
+
+# https://github.com/ariya/phantomjs/issues/13930
+# otherwise we get this error:
+# https://bugreports.qt.io/browse/QTBUG-48626
+touch src/qt/qtbase/.git
+touch src/qt/qtwebkit/.git
+touch src/qt/3rdparty/.git
+%endif
 
 # remove bundled sources
 rm -r src/mongoose
@@ -55,10 +73,7 @@ rm -r src/linenoise
 %{?with_system_qcommandline:%patch7 -p1}
 
 %build
-qmake-qt5
-%{__make} \
-	CXX="%{__cxx}" \
-	CXXFLAGS="%{rpmcxxflags} -fPIC"
+%{__python} build.py --confirm --release
 
 %install
 rm -rf $RPM_BUILD_ROOT
