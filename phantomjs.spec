@@ -2,28 +2,28 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.0.0
-Release:	2
+Release:	3
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
 # Source0-md5:	feabe9064100e241d21347739312e64d
-Patch0:		phantomjs-qt.patch
-Patch1:		phantomjs-env.patch
-
+Patch0:		%{name}-qt.patch
+Patch1:		%{name}-env.patch
 Patch3:		0003-unbundle-mongoose.patch
-Patch4:		phantomjs-disable-breakpad.patch
+Patch4:		%{name}-disable-breakpad.patch
 Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
 URL:		http://phantomjs.org/
-BuildRequires:	Qt5WebKit-devel
 BuildRequires:	Qt5PrintSupport-devel
+BuildRequires:	Qt5WebKit-devel
 BuildRequires:	coffee-script
 BuildRequires:	giflib-devel
 BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
 %{?with_system_qcommandline:BuildRequires:	qcommandline-devel}
 BuildRequires:	unzip
+Requires:	Qt5Gui-platform-xcb
 Requires:	coffee-script
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -45,7 +45,6 @@ rm -r src/breakpad
 
 %patch0 -p1
 %patch1 -p1
-
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
