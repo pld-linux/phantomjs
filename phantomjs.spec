@@ -1,16 +1,20 @@
+# NOTES
+# - fedora's attempt to package this: https://bugzilla.redhat.com/show_bug.cgi?id=891461
+#
+# Conditional build:
 %bcond_with	system_qcommandline
+
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
-Version:	2.0.0
-Release:	3
+Version:	2.1.1
+Release:	1
 License:	BSD
 Group:		Applications/Networking
-Source0:	https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
-# Source0-md5:	feabe9064100e241d21347739312e64d
+Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	db2d71e67e3557a977c2f269f1ec7fee
 Patch0:		%{name}-qt.patch
 Patch1:		%{name}-env.patch
 Patch3:		0003-unbundle-mongoose.patch
-Patch4:		%{name}-disable-breakpad.patch
 Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
@@ -41,12 +45,10 @@ rm -r src/mongoose
 rm -r src/qt
 rm -r src/linenoise
 %{?with_system_qcommandline:rm -r src/qcommandline}
-rm -r src/breakpad
 
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 %patch3 -p1
-%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %{?with_system_qcommandline:%patch7 -p1}
