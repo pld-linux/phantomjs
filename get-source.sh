@@ -54,14 +54,24 @@ filter() {
 	| sed -re '/^(diff --git|index|(new|old) |Binary files)/d'
 }
 
+dropin() {
+	local dropin=./dropin
+	test -x $dropin || dropin=../dropin
+	test -x $dropin || return
+	$dropin "$@"
+}
+
 get_package() {
 	local package=$1 ref=$2
+	echo >&2 ">> $package $tag..$ref"
 	export GIT_DIR=$package.git
 	fetch_package $package
 	git diff $tag..$ref --diff-filter=MA > diff.tmp
 	filter < diff.tmp > filtered.tmp
 	mv filtered.tmp $package.diff
 	xz -9f $package.diff
+	dropin $package.diff.xz
+	echo >&2 "<<"
 }
 
 get_package qtbase $phantom_qtbase
