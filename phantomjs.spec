@@ -9,7 +9,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.3
+Release:	0.4
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -32,7 +32,6 @@ Patch102:	qtwebkit.diff.xz
 URL:		http://phantomjs.org/
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5WebKit-devel
-BuildRequires:	coffee-script
 BuildRequires:	giflib-devel
 BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
@@ -42,7 +41,6 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	unzip
 BuildRequires:	xz
 Requires:	Qt5Gui-platform-xcb
-Requires:	coffee-script
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
