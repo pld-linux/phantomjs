@@ -5,25 +5,30 @@
 %bcond_with	system_qcommandline
 %bcond_with	system_qt
 
+%define	qtbase	5.5.1
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.2
+Release:	0.3
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	db2d71e67e3557a977c2f269f1ec7fee
-# https://github.com/ariya/phantomjs/tree/2.1.1/src/qt
-Source1:	https://github.com/Vitallium/qtbase/archive/b5cc0083a5766e773885e8dd624c51a967c17de0.tar.gz
-# Source1-md5:	ae375f9f522409ae262e949cd90bf880
-Source2:	https://github.com/Vitallium/qtwebkit/archive/e7b74331d695bfa8b77e39cdc50fc2d84a49a22a.tar.gz
-# Source2-md5:	94daad678e91ff9049ba26eb9e32febf
+Source1:	http://download.qt.io/official_releases/qt/5.5/%{qtbase}/submodules/qtbase-opensource-src-%{qtbase}.tar.xz
+# Source1-md5:	687e2b122fa2c3390b5e20a166d38038
+Source2:	http://download.qt.io/official_releases/qt/5.5/%{qtbase}/submodules/qtwebkit-opensource-src-%{qtbase}.tar.xz
+# Source2-md5:	681328edb539b8fa3a273b38c90b3e31
 Patch0:		%{name}-qt.patch
 Patch1:		%{name}-env.patch
 Patch3:		0003-unbundle-mongoose.patch
 Patch5:		0005-unbundle-qt.patch
 Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
+# See get-source.sh how to generate these diffs
+Patch101:	qtbase.diff.xz
+# Source3-md5:	22aeb09eb6df5d0ec768dcc96edb92bf
+Patch102:	qtwebkit.diff.xz
+# Source4-md5:	1e3672f5ec02c6fbb1aaa22ab568c68f
 URL:		http://phantomjs.org/
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5WebKit-devel
@@ -33,7 +38,9 @@ BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
 %{?with_system_qcommandline:BuildRequires:	qcommandline-devel}
 BuildRequires:	sed >= 4.0
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	unzip
+BuildRequires:	xz
 Requires:	Qt5Gui-platform-xcb
 Requires:	coffee-script
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,6 +58,9 @@ testing. It includes an implementation of the WebDriver API.
 rmdir src/qt/{qtbase,qtwebkit}
 mv qtbase-* src/qt/qtbase
 mv qtwebkit-* src/qt/qtwebkit
+
+%patch101 -p1 -d src/qt/qtbase
+%patch102 -p1 -d src/qt/qtwebkit
 
 # https://github.com/ariya/phantomjs/issues/13930
 # otherwise we get this error:
