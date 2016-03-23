@@ -47,6 +47,10 @@ filter() {
 		-x 'INSTALL' \
 		-x 'tests/*' \
 		-x 'doc/*' \
+		-x 'bin/findtr' \
+		-x 'bin/fixqt4headers.pl' \
+		-x 'bin/syncqt.pl' \
+		-x 'src/3rdparty/freetype/*' \
 	| sed -re '/^(diff --git|index|(new|old) |Binary files)/d'
 }
 
