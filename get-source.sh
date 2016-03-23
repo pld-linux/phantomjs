@@ -4,8 +4,7 @@
 # Author: Elan Ruusamäe <glen@pld-linux.org>
 set -e
 
-packages='qtbase qtwebkit'
-branch=5.5
+specfile=phantomjs.spec
 qt_base=git://code.qt.io/qt
 phantom_base=https://github.com/Vitallium
 tag=v5.5.1
@@ -61,6 +60,14 @@ dropin() {
 	$dropin "$@"
 }
 
+md5() {
+	local builder=./builder
+	test -x $builder || builder=../builder
+	test -x $builder || builder=$(which builder 2>/dev/null)
+	test -x $builder || return
+	$builder -ncs -5 "$@"
+}
+
 get_package() {
 	local package=$1 ref=$2
 	echo >&2 ">> $package $tag..$ref"
@@ -76,3 +83,4 @@ get_package() {
 
 get_package qtbase $phantom_qtbase
 get_package qtwebkit $phantom_qtwebkit
+md5 $specfile

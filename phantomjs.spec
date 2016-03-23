@@ -26,9 +26,9 @@ Patch6:		0006-unbundle-linenoise.patch
 Patch7:		0007-unbundle-QCommandLine.patch
 # See get-source.sh how to generate these diffs
 Patch101:	qtbase.diff.xz
-# Source3-md5:	22aeb09eb6df5d0ec768dcc96edb92bf
+# Patch101-md5:	8e8fb4b12c672ecd128fbcf1fccd964b
 Patch102:	qtwebkit.diff.xz
-# Source4-md5:	1e3672f5ec02c6fbb1aaa22ab568c68f
+# Patch102-md5:	ab3a7372ea3f7bb6326e666ffad7acda
 URL:		http://phantomjs.org/
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5WebKit-devel
