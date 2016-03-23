@@ -38,13 +38,27 @@ fetch_package() {
 	git fetch phantom
 }
 
+filter() {
+	filterdiff -p1 \
+		-x '*.qdoc' \
+		-x '*/.git*' \
+		-x '.git*' \
+		-x '.tag' \
+		-x 'INSTALL' \
+		-x 'tests/*' \
+		-x 'doc/*' \
+	| sed -re '/^(diff --git)/d'
+
+}
+
 get_package() {
 	local package=$1 ref=$2
 	export GIT_DIR=$package.git
 	fetch_package $package
 	git diff $tag..$ref --diff-filter=MA > diff.tmp
-	xz -9 diff.tmp
-	mv -f diff.tmp.xz $package.diff.xz
+	filter < diff.tmp > filtered.tmp
+	mv filtered.tmp $package.diff
+	xz -9f $package.diff
 }
 
 get_package qtbase $phantom_qtbase
