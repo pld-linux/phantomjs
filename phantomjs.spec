@@ -99,11 +99,13 @@ rm -r src/linenoise
 
 %build
 qtconfig() {
-	for a in; do
+	for a in "$@"; do
 		echo --qt-config="$a"
 	done
 }
 qtconfig=" \
+	-v \
+	-force-pkg-config \
 	-system-freetype \
 	-system-libjpeg \
 	-system-libpng \
