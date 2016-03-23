@@ -47,8 +47,7 @@ filter() {
 		-x 'INSTALL' \
 		-x 'tests/*' \
 		-x 'doc/*' \
-	| sed -re '/^(diff --git)/d'
-
+	| sed -re '/^(diff --git|index|(new|old) |Binary files)/d'
 }
 
 get_package() {
