@@ -98,7 +98,24 @@ rm -r src/linenoise
 %{?with_system_qcommandline:%patch7 -p1}
 
 %build
-%{__python} build.py --confirm --release
+qtconfig() {
+	for a in; do
+		echo --qt-config="$a"
+	done
+}
+qtconfig=" \
+	-system-freetype \
+	-system-libjpeg \
+	-system-libpng \
+	-system-pcre \
+	-system-sqlite \
+	-system-xcb \
+	-system-xkbcommon \
+	-system-zlib \
+"
+%{__python} build.py \
+	$(qtconfig $qtconfig) \
+	--confirm --release
 
 %install
 rm -rf $RPM_BUILD_ROOT
