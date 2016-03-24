@@ -40,15 +40,13 @@ BuildRequires:	xz
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5WebKit-devel
 %else
-BuildRequires:	Firebird-devel
 BuildRequires:	OpenGL-devel
 BuildRequires:	bison
+BuildRequires:	flex
 BuildRequires:	fontconfig-devel
-BuildRequires:	freetds-devel
 BuildRequires:	freetype-devel >= 2.1.3
 BuildRequires:	gcc >= 5:4.0
 BuildRequires:	glib2-devel >= 2.0.0
-BuildRequires:	flex
 BuildRequires:	gperf
 BuildRequires:	libdrm-devel
 BuildRequires:	libicu-devel
@@ -67,7 +65,7 @@ BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	unixODBC-devel >= 2.3.0
+BuildRequires:	tslib-devel
 BuildRequires:	xcb-util-image-devel
 BuildRequires:	xcb-util-keysyms-devel
 BuildRequires:	xcb-util-renderutil-devel
@@ -158,6 +156,15 @@ qtconfig=" \
 	-system-xcb \
 	-system-xkbcommon \
 	-system-zlib \
+	-no-sql-db2 \
+	-no-sql-ibase \
+	-no-sql-mysql \
+	-no-sql-oci \
+	-no-sql-odbc \
+	-no-sql-psql \
+	-no-sql-sqlite \
+	-no-sql-sqlite2 \
+	-no-sql-tds \
 "
 %{__python} build.py \
 	$(qtconfig $qtconfig) \
