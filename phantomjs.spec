@@ -9,7 +9,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.4
+Release:	0.5
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -30,17 +30,65 @@ Patch101:	qtbase.diff.xz
 Patch102:	qtwebkit.diff.xz
 # Patch102-md5:	ab3a7372ea3f7bb6326e666ffad7acda
 URL:		http://phantomjs.org/
-BuildRequires:	Qt5PrintSupport-devel
-BuildRequires:	Qt5WebKit-devel
-BuildRequires:	giflib-devel
 BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
 %{?with_system_qcommandline:BuildRequires:	qcommandline-devel}
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	unzip
 BuildRequires:	xz
-Requires:	Qt5Gui-platform-xcb
+%if %{with system_qt}
+BuildRequires:	Qt5PrintSupport-devel
+BuildRequires:	Qt5WebKit-devel
+%else
+BuildRequires:	Firebird-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	bison
+BuildRequires:	fontconfig-devel
+BuildRequires:	freetds-devel
+BuildRequires:	freetype-devel >= 2.1.3
+BuildRequires:	gcc >= 5:4.0
+BuildRequires:	glib2-devel >= 2.0.0
+BuildRequires:	flex
+BuildRequires:	gperf
+BuildRequires:	libdrm-devel
+BuildRequires:	libicu-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libpng-devel >= 2:1.0.8
+BuildRequires:	libproxy-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	libxcb-devel >= 1.10
+BuildRequires:	mysql-devel
+BuildRequires:	openssl-devel
+BuildRequires:	pcre16-devel >= 8.30
+BuildRequires:	pkgconfig
+BuildRequires:	postgresql-devel
+BuildRequires:	python-modules
+BuildRequires:	rpmbuild(macros) >= 1.654
+BuildRequires:	ruby
+BuildRequires:	ruby-modules
+BuildRequires:	sed >= 4.0
+BuildRequires:	sqlite-devel
+BuildRequires:	sqlite3-devel
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	tslib-devel
+BuildRequires:	unixODBC-devel >= 2.3.0
+BuildRequires:	xcb-util-image-devel
+BuildRequires:	xcb-util-keysyms-devel
+BuildRequires:	xcb-util-renderutil-devel
+BuildRequires:	xcb-util-wm-devel
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXfixes-devel
+BuildRequires:	xorg-lib-libXi-devel
+BuildRequires:	xorg-lib-libXrender-devel
+BuildRequires:	xorg-lib-libxkbcommon-devel
+BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.4.1
+BuildRequires:	xorg-lib-libxkbcommon-x11-devel
+BuildRequires:	xorg-lib-libxkbcommon-x11-devel >= 0.4.1
+BuildRequires:	xz
+BuildRequires:	zlib-devel
+%endif
+%{?with_system_qt:Requires:	Qt5Gui-platform-xcb}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
