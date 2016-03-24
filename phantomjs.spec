@@ -57,20 +57,16 @@ BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libproxy-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libxcb-devel >= 1.10
-BuildRequires:	mysql-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pcre16-devel >= 8.30
 BuildRequires:	pkgconfig
-BuildRequires:	postgresql-devel
 BuildRequires:	python-modules
 BuildRequires:	rpmbuild(macros) >= 1.654
 BuildRequires:	ruby
 BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite-devel
 BuildRequires:	sqlite3-devel
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	tslib-devel
 BuildRequires:	unixODBC-devel >= 2.3.0
 BuildRequires:	xcb-util-image-devel
 BuildRequires:	xcb-util-keysyms-devel
