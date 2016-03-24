@@ -9,7 +9,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.5
+Release:	0.6
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -147,15 +147,22 @@ qtconfig() {
 }
 qtconfig=" \
 	-v \
+	-accessibility \
+	-fontconfig \
 	-force-pkg-config \
-	-system-freetype \
-	-system-libjpeg \
-	-system-libpng \
-	-system-pcre \
-	-system-sqlite \
-	-system-xcb \
-	-system-xkbcommon \
-	-system-zlib \
+	-gtkstyle \
+	-largefile \
+	-libproxy \
+	-no-directfb \
+	-no-eglfs \
+	-no-glib \
+	-no-gstreamer \
+	-no-gtkstyle \
+	-no-icu \
+	-no-journald \
+	-no-kms \
+	-no-linuxfb \
+	-no-mtdev \
 	-no-sql-db2 \
 	-no-sql-ibase \
 	-no-sql-mysql \
@@ -165,6 +172,18 @@ qtconfig=" \
 	-no-sql-sqlite \
 	-no-sql-sqlite2 \
 	-no-sql-tds \
+	-openssl \
+	-system-freetype \
+	-system-harfbuzz \
+	-system-libjpeg \
+	-system-libpng \
+	-system-pcre \
+	-system-proxies \
+	-system-sqlite \
+	-system-xcb \
+	-system-xkbcommon-x11 \
+	-system-zlib \
+	-xkbcommon-evdev \
 "
 %{__python} build.py \
 	$(qtconfig $qtconfig) \
