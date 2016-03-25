@@ -10,7 +10,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.7
+Release:	0.8
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -151,7 +151,6 @@ qtconfig=" \
 	-accessibility \
 	-fontconfig \
 	-force-pkg-config \
-	-gtkstyle \
 	-largefile \
 	-libproxy \
 	-no-gstreamer \
@@ -174,10 +173,7 @@ qtconfig=" \
 	-system-libpng \
 	-system-pcre \
 	-system-proxies \
-	-system-xcb \
-	-system-xkbcommon-x11 \
 	-system-zlib \
-	-xkbcommon-evdev \
 "
 %{__python} build.py \
 	$(qtconfig $qtconfig) \
