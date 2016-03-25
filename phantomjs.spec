@@ -9,7 +9,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.6
+Release:	0.7
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -65,7 +65,6 @@ BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	tslib-devel
 BuildRequires:	xcb-util-image-devel
 BuildRequires:	xcb-util-keysyms-devel
 BuildRequires:	xcb-util-renderutil-devel
@@ -165,6 +164,7 @@ qtconfig=" \
 	-no-sql-sqlite \
 	-no-sql-sqlite2 \
 	-no-sql-tds \
+	-no-tslib \
 	-openssl \
 	-system-freetype \
 	-system-harfbuzz \
