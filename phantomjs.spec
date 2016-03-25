@@ -65,17 +65,10 @@ BuildRequires:	ruby
 BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	xcb-util-image-devel
-BuildRequires:	xcb-util-keysyms-devel
-BuildRequires:	xcb-util-renderutil-devel
-BuildRequires:	xcb-util-wm-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
-BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXrender-devel
-BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.4.1
-BuildRequires:	xorg-lib-libxkbcommon-x11-devel >= 0.4.1
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 %endif
