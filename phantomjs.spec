@@ -136,10 +136,6 @@ rm -r src/linenoise
 %patch6 -p1
 %{?with_system_qcommandline:%patch7 -p1}
 
-# cookie tests fail
-mv module/cookiejar/to-map.js{,.skip}
-mv module/webpage/cookies.js{,.skip}
-
 %build
 qtconfig() {
 	for a in "$@"; do
@@ -180,7 +176,10 @@ qtconfig=" \
 	--confirm --release
 
 %if %{with tests}
-test/run-tests.py -v
+# note, these cookie tests fail with non-C locale:
+# - module/cookiejar/to-map.js
+# - module/webpage/cookies.js
+LC_ALL=C test/run-tests.py -v
 %endif
 
 %install
