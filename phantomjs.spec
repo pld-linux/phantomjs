@@ -64,7 +64,6 @@ BuildRequires:	rpmbuild(macros) >= 1.654
 BuildRequires:	ruby
 BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xcb-util-image-devel
 BuildRequires:	xcb-util-keysyms-devel
@@ -75,9 +74,7 @@ BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXrender-devel
-BuildRequires:	xorg-lib-libxkbcommon-devel
 BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.4.1
-BuildRequires:	xorg-lib-libxkbcommon-x11-devel
 BuildRequires:	xorg-lib-libxkbcommon-x11-devel >= 0.4.1
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -177,7 +174,6 @@ qtconfig=" \
 	-system-libpng \
 	-system-pcre \
 	-system-proxies \
-	-system-sqlite \
 	-system-xcb \
 	-system-xkbcommon-x11 \
 	-system-zlib \
