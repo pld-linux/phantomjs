@@ -79,6 +79,9 @@ BuildRequires:	xorg-lib-libxkbcommon-x11-devel >= 0.4.1
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 %endif
+%if %{with tests}
+BuildRequires:	fontconfig
+%endif
 %{?with_system_qt:Requires:	Qt5Gui-platform-xcb}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
