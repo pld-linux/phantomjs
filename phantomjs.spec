@@ -41,21 +41,17 @@ BuildRequires:	xz
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5WebKit-devel
 %else
-BuildRequires:	OpenGL-devel
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel >= 2.1.3
 BuildRequires:	gcc >= 5:4.0
-BuildRequires:	glib2-devel >= 2.0.0
 BuildRequires:	gperf
-BuildRequires:	libdrm-devel
 BuildRequires:	libicu-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libproxy-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	libxcb-devel >= 1.10
 BuildRequires:	openssl-devel
 BuildRequires:	pcre16-devel >= 8.30
 BuildRequires:	pkgconfig
@@ -67,7 +63,6 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	xz
 BuildRequires:	zlib-devel
