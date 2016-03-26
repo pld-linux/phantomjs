@@ -170,7 +170,7 @@ qtconfig=" \
 	-system-proxies \
 	-system-zlib \
 "
-%{__python} build.py \
+%{__python} -u build.py \
 	$(qtconfig $qtconfig) \
 	--confirm --release
 
