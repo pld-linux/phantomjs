@@ -10,7 +10,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.10
+Release:	0.20
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -133,6 +133,11 @@ qtconfig() {
 		echo --qt-config="$a"
 	done
 }
+webkit_config() {
+	for a in "$@"; do
+		echo --webkit-qmake-args="$a"
+	done
+}
 qtconfig=" \
 	-v \
 	-accessibility \
@@ -165,8 +170,29 @@ qtconfig=" \
 	-system-proxies \
 	-system-zlib \
 "
+
+webkit_config="
+	WEBKIT_CONFIG-=build_tests
+	WEBKIT_CONFIG-=have_qtquick
+	WEBKIT_CONFIG-=have_qtsensors
+	WEBKIT_CONFIG-=have_qttestlib
+	WEBKIT_CONFIG-=have_sqlite3
+	WEBKIT_CONFIG-=have_xcomposite
+	WEBKIT_CONFIG-=have_xrender
+	WEBKIT_CONFIG-=use_libxml2
+	WEBKIT_CONFIG-=use_webp
+	WEBKIT_CONFIG-=xslt
+
+	WEBKIT_TOOLS_CONFIG-=build_imagediff
+	WEBKIT_TOOLS_CONFIG-=build_minibrowser
+	WEBKIT_TOOLS_CONFIG-=build_qttestsupport
+	WEBKIT_TOOLS_CONFIG-=build_test_npapi
+	WEBKIT_TOOLS_CONFIG-=build_wtr
+"
+#	WEBKIT_TOOLS_CONFIG-=build_testbrowser
 %{__python} -u build.py \
 	$(qtconfig $qtconfig) \
+	$(webkit_config $webkit_config) \
 	--confirm --release
 
 %if %{with tests}
