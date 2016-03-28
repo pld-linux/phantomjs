@@ -10,7 +10,7 @@
 Summary:	Headless WebKit with a JavaScript API
 Name:		phantomjs
 Version:	2.1.1
-Release:	0.20
+Release:	0.21
 License:	BSD
 Group:		Applications/Networking
 Source0:	https://github.com/ariya/phantomjs/archive/%{version}/%{name}-%{version}.tar.gz
@@ -173,9 +173,11 @@ qtconfig=" \
 
 webkit_config="
 	WEBKIT_CONFIG-=build_tests
+	WEBKIT_CONFIG-=have_glx
 	WEBKIT_CONFIG-=have_qtquick
 	WEBKIT_CONFIG-=have_qtsensors
 	WEBKIT_CONFIG-=have_qttestlib
+	WEBKIT_CONFIG-=have_qttestsupport
 	WEBKIT_CONFIG-=have_sqlite3
 	WEBKIT_CONFIG-=have_xcomposite
 	WEBKIT_CONFIG-=have_xrender
