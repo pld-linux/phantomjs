@@ -21,113 +21,113 @@ index 226c98f..2bf3fdb 100644
  }
  
  QString Config::helpText() const
-diff --git a/src/phantom.cpp b/src/phantom.cpp
-index 1f31795..efc4449 100644
---- a/src/phantom.cpp
-+++ b/src/phantom.cpp
-@@ -372,7 +372,11 @@ void Phantom::loadModule(const QString &
-       "require.cache['" + filename + "'].exports," +
-       "require.cache['" + filename + "']" +
-       "));";
--   m_page->mainFrame()->evaluateJavaScript(scriptSource, "");
-+   m_page->mainFrame()->evaluateJavaScript(scriptSource
+--- phantomjs-2.1.1/src/phantom.cpp	2016-03-22 19:59:31.131744793 +0200
++++ phantomjs-2.1.1/src/phantom.cpp	2016-03-22 20:08:17.872582605 +0200
+@@ -381,7 +381,11 @@
+         "require.cache['" + filename + "'].exports," +
+         "require.cache['" + filename + "']" +
+         "));";
+-    m_page->mainFrame()->evaluateJavaScript(scriptSource, QString(JAVASCRIPT_SOURCE_PLATFORM_URL).arg(QFileInfo(filename).fileName()));
++    m_page->mainFrame()->evaluateJavaScript(scriptSource
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+		   , ""
++		   	, QString(JAVASCRIPT_SOURCE_PLATFORM_URL).arg(QFileInfo(filename).fileName())
 +#endif
-+		   );
++			);
  }
  
- bool Phantom::injectJs(const QString &jsFilePath)
-@@ -419,8 +423,10 @@ void Phantom::onInitialized()
+ bool Phantom::injectJs(const QString& jsFilePath)
+@@ -478,8 +482,11 @@
  
      // Bootstrap the PhantomJS scope
      m_page->mainFrame()->evaluateJavaScript(
--                Utils::readResourceFileUtf8(":/bootstrap.js"),
--                QString("phantomjs://bootstrap.js")
-+                Utils::readResourceFileUtf8(":/bootstrap.js")
+-        Utils::readResourceFileUtf8(":/bootstrap.js"),
++        Utils::readResourceFileUtf8(":/bootstrap.js")
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+                , QString("phantomjs://bootstrap.js")
++		,
+         QString(JAVASCRIPT_SOURCE_PLATFORM_URL).arg("bootstrap.js")
 +#endif
-                 );
+     );
  }
  
-diff --git a/src/repl.cpp b/src/repl.cpp
-index 5ac69da..7b1872d 100644
---- a/src/repl.cpp
-+++ b/src/repl.cpp
-@@ -147,7 +147,11 @@ REPL::REPL(QWebFrame *webframe, Phantom *parent)
+--- phantomjs-2.1.1/src/repl.cpp~	2016-01-24 20:24:05.000000000 +0200
++++ phantomjs-2.1.1/src/repl.cpp	2016-03-22 20:01:59.629454535 +0200
+@@ -147,7 +147,11 @@
      linenoiseSetCompletionCallback(REPL::offerCompletion);
  
      // Inject REPL utility functions
--    m_webframe->evaluateJavaScript(Utils::readResourceFileUtf8(":/repl.js"), QString("phantomjs://repl.js"));
+-    m_webframe->evaluateJavaScript(Utils::readResourceFileUtf8(":/repl.js"), QString(JAVASCRIPT_SOURCE_PLATFORM_URL).arg("repl.js"));
 +    m_webframe->evaluateJavaScript(Utils::readResourceFileUtf8(":/repl.js")
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+            , QString("phantomjs://repl.js")
++			, QString(JAVASCRIPT_SOURCE_PLATFORM_URL).arg("repl.js")
 +#endif
-+            );
++			);
  
      // Add self to JavaScript world
      m_webframe->addToJavaScriptWindowObject("_repl", this);
-@@ -184,8 +188,10 @@ void REPL::offerCompletion(const char *buf, linenoiseCompletions *lc)
+@@ -184,8 +188,11 @@
      QStringList completions = REPL::getInstance()->m_webframe->evaluateJavaScript(
-                 QString(JS_RETURN_POSSIBLE_COMPLETIONS).arg(
-                     toInspect,
--                    toComplete),
--                QString()
-+                    toComplete)
+                                   QString(JS_RETURN_POSSIBLE_COMPLETIONS).arg(
+                                       toInspect,
+-                                      toComplete),
++                                      toComplete)
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+                , QString()
++								  ,
+                                   QString()
 +#endif
-                 ).toStringList();
+                               ).toStringList();
  
-     foreach (QString c, completions) {
-@@ -210,7 +216,11 @@ void REPL::startLoop()
+     foreach(QString c, completions) {
+@@ -210,7 +217,11 @@
              // Send the user input to the main Phantom frame for evaluation
              m_webframe->evaluateJavaScript(
-                         QString(JS_EVAL_USER_INPUT).arg(
--                            QString(userInput).replace('"', "\\\"")), QString("phantomjs://repl-input"));
-+                            QString(userInput).replace('"', "\\\""))
+                 QString(JS_EVAL_USER_INPUT).arg(
+-                    QString(userInput).replace('"', "\\\"")), QString("phantomjs://repl-input"));
++                    QString(userInput).replace('"', "\\\""))
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+                        , QString("phantomjs://repl-input")
++				, QString("phantomjs://repl-input")
 +#endif
-+                        );
++				);
  
              // Save command in the REPL history
              linenoiseHistoryAdd(userInput);
-diff --git a/src/utils.cpp b/src/utils.cpp
-index 8bbdeca..df2a866 100644
---- a/src/utils.cpp
-+++ b/src/utils.cpp
-@@ -119,7 +119,11 @@ bool Utils::injectJsInFrame(const QString &jsFilePath, const Encoding &jsFileEnc
+--- phantomjs-2.1.1/src/utils.cpp	2016-03-22 20:03:26.137279205 +0200
++++ phantomjs-2.1.1/src/utils.cpp	2016-03-22 20:16:15.640771018 +0200
+@@ -132,7 +132,11 @@
          return false;
      }
      // Execute JS code in the context of the document
--    targetFrame->evaluateJavaScript(scriptBody, jsFilePath);
+-    targetFrame->evaluateJavaScript(scriptBody, QString(JAVASCRIPT_SOURCE_CODE_URL).arg(QFileInfo(scriptPath).fileName()));
 +    targetFrame->evaluateJavaScript(scriptBody
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+            , jsFilePath
++			, QString(JAVASCRIPT_SOURCE_CODE_URL).arg(QFileInfo(scriptPath).fileName())
 +#endif
-+            );
++			);
      return true;
  }
  
-@@ -138,7 +142,11 @@ bool Utils::loadJSForDebug(const QString& jsFilePath, const Encoding& jsFileEnc,
-     targetFrame->setHtml(remoteDebuggerHarnessSrc);
+@@ -147,10 +151,18 @@
+     QString scriptBody = jsFromScriptFile(scriptPath, jsFileLanguage, jsFileEnc);
+ 
+     scriptBody = QString("function __run() {\n%1\n}").arg(scriptBody);
+-    targetFrame->evaluateJavaScript(scriptBody, QString(JAVASCRIPT_SOURCE_CODE_URL).arg(QFileInfo(scriptPath).fileName()));
++    targetFrame->evaluateJavaScript(scriptBody
++#ifdef HAVE_QT_JS_STACK_TRACES
++			, QString(JAVASCRIPT_SOURCE_CODE_URL).arg(QFileInfo(scriptPath).fileName())
++#endif
++			);
  
      if (autorun) {
 -        targetFrame->evaluateJavaScript("__run()", QString());
 +        targetFrame->evaluateJavaScript("__run()"
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+                , QString()
++				, QString()
 +#endif
-+                );
++				);
      }
  
      return true;
-diff --git a/src/webpage.cpp b/src/webpage.cpp
-index c76a4b8..fe6f816 100644
---- a/src/webpage.cpp
-+++ b/src/webpage.cpp
+--- phantomjs-2.1.1/src/webpage.cpp~	2016-03-22 20:03:50.000000000 +0200
++++ phantomjs-2.1.1/src/webpage.cpp	2016-03-22 20:05:19.069859587 +0200
 @@ -570,7 +570,9 @@ void WebPage::applySettings(const QVariantMap &def)
      opt->setAttribute(QWebSettings::JavascriptEnabled, def[PAGE_SETTINGS_JS_ENABLED].toBool());
      opt->setAttribute(QWebSettings::XSSAuditingEnabled, def[PAGE_SETTINGS_XSS_AUDITING].toBool());
@@ -138,17 +138,17 @@ index c76a4b8..fe6f816 100644
      opt->setAttribute(QWebSettings::JavascriptCanOpenWindows, def[PAGE_SETTINGS_JS_CAN_OPEN_WINDOWS].toBool());
      opt->setAttribute(QWebSettings::JavascriptCanCloseWindows, def[PAGE_SETTINGS_JS_CAN_CLOSE_WINDOWS].toBool());
  
-@@ -679,8 +681,11 @@ QVariant WebPage::evaluateJavaScript(const QString &code)
+@@ -753,8 +755,11 @@
      qDebug() << "WebPage - evaluateJavaScript" << function;
  
      evalResult = m_currentFrame->evaluateJavaScript(
--                function,                                   //< function evaluated
--                QString("phantomjs://webpage.evaluate()")); //< reference source file
-+                function                                    //< function evaluated
+-                     function,                                   //< function evaluated
+-                     QString("phantomjs://webpage.evaluate()")); //< reference source file
++                     function                                   //< function evaluated
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+                , QString("phantomjs://webpage.evaluate()") //< reference source file
++                     , QString("phantomjs://webpage.evaluate()")
 +#endif
-+                );
++					 ); //< reference source file
  
      qDebug() << "WebPage - evaluateJavaScript result" << evalResult;
  
@@ -177,12 +177,12 @@ index c76a4b8..fe6f816 100644
      return true;
  }
  
-@@ -1180,6 +1193,7 @@ QString WebPage::windowName() const
+@@ -1288,6 +1288,7 @@
      return m_mainFrame->evaluateJavaScript("window.name;").toString();
  }
  
 +#ifdef HAVE_QWEBFRAME_PRINT_ADDONS
- qreal getHeight(const QVariantMap &map, const QString &key)
+ qreal getHeight(const QVariantMap& map, const QString& key)
  {
      QVariant footer = map.value(key);
 @@ -1219,7 +1233,11 @@ QString getHeaderFooter(const QVariantMap &map, const QString &key, QWebFrame *f
@@ -206,21 +206,19 @@ index c76a4b8..fe6f816 100644
  
  void WebPage::_uploadFile(const QString &selector, const QStringList &fileNames)
  {
-@@ -1255,7 +1274,11 @@ bool WebPage::injectJs(const QString &jsFilePath) {
- }
+@@ -1369,7 +1371,11 @@
  
- void WebPage::_appendScriptElement(const QString &scriptUrl) {
+ void WebPage::_appendScriptElement(const QString& scriptUrl)
+ {
 -    m_currentFrame->evaluateJavaScript(QString(JS_APPEND_SCRIPT_ELEMENT).arg(scriptUrl), scriptUrl);
 +    m_currentFrame->evaluateJavaScript(QString(JS_APPEND_SCRIPT_ELEMENT).arg(scriptUrl)
 +#ifdef HAVE_QT_JS_STACK_TRACES
-+            , scriptUrl
++			, scriptUrl
 +#endif
-+            );
++			);
  }
  
- QObject *WebPage::_getGenericCallback() {
-diff --git a/src/webpage.h b/src/webpage.h
-index e065bb4..0bdfa27 100644
+ QObject* WebPage::_getGenericCallback()
 --- a/src/webpage.h
 +++ b/src/webpage.h
 @@ -43,7 +43,10 @@ class NetworkAccessManager;
@@ -248,6 +246,3 @@ index e065bb4..0bdfa27 100644
  
      void setZoomFactor(qreal zoom);
      qreal zoomFactor() const;
--- 
-1.7.11.7
-
