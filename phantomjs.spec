@@ -30,6 +30,8 @@ Patch101:	qtbase.diff.xz
 # Patch101-md5:	8e8fb4b12c672ecd128fbcf1fccd964b
 Patch102:	qtwebkit.diff.xz
 # Patch102-md5:	ab3a7372ea3f7bb6326e666ffad7acda
+Patch201:	qtwebkit-icu59.patch
+Patch202:	qtwebkit-new-char-types.patch
 URL:		http://phantomjs.org/
 BuildRequires:	linenoise-devel
 BuildRequires:	mongoose-devel
@@ -89,6 +91,9 @@ mv qtwebkit-* src/qt/qtwebkit
 
 %patch101 -p1 -d src/qt/qtbase
 %patch102 -p1 -d src/qt/qtwebkit
+
+%patch201 -p1 -d src/qt/qtwebkit
+%patch202 -p1 -d src/qt/qtwebkit
 
 # https://github.com/ariya/phantomjs/issues/13930
 # otherwise we get this error:
