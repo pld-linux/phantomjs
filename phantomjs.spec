@@ -89,11 +89,11 @@ rmdir src/qt/{qtbase,qtwebkit}
 mv qtbase-* src/qt/qtbase
 mv qtwebkit-* src/qt/qtwebkit
 
-%patch101 -p1 -d src/qt/qtbase
-%patch102 -p1 -d src/qt/qtwebkit
+%patch -P101 -p1 -d src/qt/qtbase
+%patch -P102 -p1 -d src/qt/qtwebkit
 
-%patch201 -p1 -d src/qt/qtwebkit
-%patch202 -p1 -d src/qt/qtwebkit
+%patch -P201 -p1 -d src/qt/qtwebkit
+%patch -P202 -p1 -d src/qt/qtwebkit
 
 # https://github.com/ariya/phantomjs/issues/13930
 # otherwise we get this error:
@@ -126,10 +126,10 @@ rm -r src/linenoise
 %{?with_system_qcommandline:rm -r src/qcommandline}
 
 #%patch0 -p1
-%patch1 -p1
-%patch3 -p1
+%patch -P1 -p1
+%patch -P3 -p1
 %{?with_system_qt:%patch5 -p1}
-%patch6 -p1
+%patch -P6 -p1
 %{?with_system_qcommandline:%patch7 -p1}
 
 %build
