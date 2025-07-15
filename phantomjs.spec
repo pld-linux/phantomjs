@@ -125,7 +125,7 @@ rm -r src/mongoose
 rm -r src/linenoise
 %{?with_system_qcommandline:rm -r src/qcommandline}
 
-#%patch0 -p1
+#%%patch0 -p1
 %patch -P1 -p1
 %patch -P3 -p1
 %{?with_system_qt:%patch5 -p1}
